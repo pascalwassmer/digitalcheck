@@ -1,1 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="🎯 RTS DigitalCheck - Outil d'analyse Digital First pour évaluer les contenus selon les User Needs RTS" />
+    <meta name="keywords" content="digital-first, content-analysis, user-needs, rts, react" />
+    <meta name="author" content="RTS" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://github.com/VOTRE-USERNAME/rts-digitalcheck" />
+    <meta property="og:title" content="RTS DigitalCheck - Analyseur Digital First" />
+    <meta property="og:description" content="Outil d'analyse Digital First pour évaluer les contenus selon les User Needs RTS" />
+    <meta property="og:image" content="/og-image.png" />
 
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://github.com/VOTRE-USERNAME/rts-digitalcheck" />
+    <meta property="twitter:title" content="RTS DigitalCheck - Analyseur Digital First" />
+    <meta property="twitter:description" content="Outil d'analyse Digital First pour évaluer les contenus selon les User Needs RTS" />
+    <meta property="twitter:image" content="/og-image.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#DC2626" />
+    
+    <title>RTS DigitalCheck - Analyseur Digital First</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Lucide React Icons -->
+    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.js"></script>
+    
+    <!-- Babel for JSX transformation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #DC2626;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #B91C1C;
+      }
+      
+      /* Loading animation */
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      /* Focus rings for accessibility */
+      button:focus {
+        outline: 2px solid #DC2626;
+        outline-offset: 2px;
+      }
+      
+      /* Line clamp utility */
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Service Worker for PWA -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
+    
+    <!-- Load and render the React app -->
+    <script type="text/babel">
+      // Import the App component (this would be replaced by proper bundling in production)
+      // For demo purposes, we'll include a simplified version here
+      
+      const { useState, useEffect, useRef } = React;
+      const { createRoot } = ReactDOM;
+      
+      // Simplified demo version - replace with full App.jsx in production
+      function DemoApp() {
+        const [idea, setIdea] = useState('');
+        
+        return (
+          <div className="max-w-4xl mx-auto p-4 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+            <div className="bg-white rounded-lg p-6 shadow-sm border-l-4 border-red-600 mb-6">
+              <div className="flex items-center space-x-4">
+                <div className="bg-red-600 text-white px-4 py-2 rounded font-bold text-xl shadow-md">RTS</div>
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-800 mb-2">RTS DigitalCheck</h1>
+                  <p className="text-gray-600">Outil d'analyse Digital First pour évaluer les contenus selon les User Needs RTS</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-lg p-6 border border-red-200 shadow-lg">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm">🎯</span>
+                </div>
+                <h2 className="text-lg font-semibold text-gray-800">Décrivez votre idée de contenu</h2>
+              </div>
+              
+              <textarea
+                value={idea}
+                onChange={(e) => setIdea(e.target.value)}
+                placeholder="💡 Décrivez votre idée en précisant la plateforme, le format, la durée et le public cible..."
+                className="w-full h-24 p-4 border-2 border-red-200 rounded-lg resize-none focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-red-50 focus:bg-white transition-colors"
+              />
+              
+              <div className="mt-4 flex justify-end">
+                <button
+                  className="flex items-center space-x-2 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold shadow-lg transition-colors"
+                  onClick={() => alert('Version complète disponible sur GitHub!')}
+                >
+                  <span>Analyser</span>
+                </button>
+              </div>
+              
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h3 className="font-semibold text-blue-800 mb-2">🚀 Version complète disponible</h3>
+                <p className="text-blue-700 text-sm">
+                  Cette démo montre l'interface de base. Pour accéder à toutes les fonctionnalités 
+                  (analyse IA, User Needs, export, etc.), consultez le repository GitHub complet.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      }
+      
+      // Render the app
+      const root = createRoot(document.getElementById('root'));
+      root.render(<DemoApp />);
+    </script>
+  </body>
+</html>
