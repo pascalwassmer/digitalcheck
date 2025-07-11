@@ -144,20 +144,20 @@ const useAnalyzer = ({ ideaText, onSuccess, onError }) => {
         await new Promise(resolve => setTimeout(resolve, 800));
       }
 
-      // Simulation pour démo - remplacer par window.claude.complete(ANALYSIS_PROMPT(ideaText))
-      const mockResponse = {
-        score: Math.floor(Math.random() * 40) + 70, // Score entre 70-110
-        explanation: "Bonne approche Digital First avec format adapté à la plateforme. L'accroche est efficace et le contenu répond bien aux besoins utilisateurs identifiés.",
-        userNeeds: ["Mettez-moi à jour", "Donnez-moi de l'analyse"],
-        recommendations: [
-          "Ajouter des éléments interactifs pour renforcer l'engagement",
-          "Optimiser pour le partage social et la virabilité",
-          "Mettre en place des métriques de mesure d'impact"
-        ]
-      };
+      // Vérifier si l'API Claude est disponible
+      if (!window.claude?.complete) {
+        throw new Error('API Claude non disponible. Veuillez vous assurer que l\'outil fonctionne dans l\'environnement Claude.ai');
+      }
+
+      const response = await window.claude.complete(ANALYSIS_PROMPT(ideaText));
+      const cleanedResponse = response.replace(/```json\s*/, '').replace(/\s*```$/, '');
       
-      setResult(mockResponse);
-      onSuccess?.(mockResponse);
+      let analysisResult;
+      try {
+        analysisResult = JSON.parse(cleanedResponse);
+      } catch (parseError) {
+        throw new Error('Format de réponse invalide de l\'API Claude');
+      }
       
     } catch (error) {
       console.error('Analyse error:', error);
