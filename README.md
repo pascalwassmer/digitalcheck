@@ -1,4 +1,4 @@
-# 🎯 RTS DigitalCheck
+# 🎯 DigitalCheck
 
 Outil d'analyse Digital First pour évaluer les contenus selon les User Needs RTS.
 
