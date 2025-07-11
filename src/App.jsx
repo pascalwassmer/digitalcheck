@@ -374,7 +374,128 @@ export default function App() {
       {/* Header */}
       <div className="mb-4 md:mb-6 bg-white rounded-lg p-3 md:p-6 shadow-sm border-l-4 border-red-600">
         <div className="flex flex-col space-y-3 md:space-y-0 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center space-x-3 md:space-x-4">
+          <div className="flex space-x-2 md:space-x-3">
+            {result?.score && (
+              <button 
+                onClick={exportResults} 
+                className="flex items-center space-x-1 md:space-x-2 px-3 md:px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 focus:ring-2 focus:ring-gray-500 focus:outline-none text-sm md:text-base"
+                aria-label="Exporter les résultats de l'analyse"
+              >
+                <Download className="w-3 h-3 md:w-4 md:h-4" />
+                <span className="hidden sm:inline">Exporter</span>
+              </button>
+            )}
+            
+            <button
+              onClick={analyzeIdea}
+              disabled={!ideaText.trim() || loading}
+              className={`flex items-center space-x-1 md:space-x-2 px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold focus:ring-2 focus:ring-red-500 focus:outline-none transition-colors text-sm md:text-base ${
+                ideaText.trim() && !loading
+                  ? 'bg-red-600 text-white hover:bg-red-700 shadow-lg'
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
+              aria-busy={loading}
+              aria-label={loading ? 'Analyse en cours' : 'Lancer l\'analyse'}
+            >
+              {loading ? (
+                <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
+              ) : (
+                <Send className="w-4 h-4 md:w-5 md:h-5" />
+              )}
+              <span>{loading ? 'Analyse...' : 'Analyser'}</span>
+            </button>
+          </div>
+        </div>
+        
+        {loading && loadingStep && (
+          <div className="mt-3 md:mt-4 p-2 md:p-3 bg-red-600 text-white rounded-lg" aria-live="polite">
+            <p className="text-xs md:text-sm flex items-center space-x-2">
+              <div className="w-3 h-3 md:w-4 md:h-4 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
+              <span>{loadingStep}</span>
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Résultats */}
+      {result && (
+        <div className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 shadow-sm">
+          <div className="flex items-center space-x-4 mb-4">
+            <TrendingUp className="w-8 h-8 text-red-600" />
+            <div className="flex-1">
+              <h2 className="text-xl font-bold text-gray-800">Résultat de l'analyse</h2>
+              <p className={`text-2xl md:text-3xl font-bold ${getScoreColor(result.score)} mb-1`}>
+                {result.score}/110
+              </p>
+              <p className="text-base text-gray-600">{getScoreInterpretation(result.score)}</p>
+            </div>
+          </div>
+          
+          <div className="mb-4">
+            <div className="w-full bg-gray-200 rounded-full h-3" role="progressbar" aria-valuenow={result.score} aria-valuemax={110}>
+              <div 
+                className={`h-3 rounded-full transition-all duration-1000 ${getProgressColor(result.score)}`}
+                style={{ width: `${Math.min((result.score / 110) * 100, 100)}%` }}
+              ></div>
+            </div>
+          </div>
+
+          {result.explanation && (
+            <div className="bg-gray-50 rounded-lg p-4 mb-4">
+              <h3 className="font-semibold text-gray-800 mb-2">📊 Analyse détaillée</h3>
+              <p className="text-gray-700 leading-relaxed">{result.explanation}</p>
+            </div>
+          )}
+
+          {/* User Needs identifiés */}
+          {result.userNeeds?.length > 0 && (
+            <div className="mb-4">
+              <h3 className="font-semibold text-gray-800 mb-3 flex items-center space-x-2 text-lg">
+                <Users className="w-5 h-5 text-red-600" />
+                <span>User Needs identifiés</span>
+              </h3>
+              <div className="grid gap-3 md:flex md:flex-wrap">
+                {result.userNeeds.map((need, index) => {
+                  const userNeed = USER_NEEDS.find(un => un.name === need);
+                  return (
+                    <div key={index} className="bg-red-50 border border-red-200 rounded-lg p-3 flex-1 min-w-0">
+                      <h4 className="font-semibold text-red-800 text-sm">{need}</h4>
+                      {userNeed && (
+                        <p className="text-red-700 text-xs mt-1">{userNeed.description}</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Recommandations */}
+          {result.recommendations?.length > 0 && (
+            <div className="mb-4">
+              <h3 className="font-semibold text-gray-800 mb-3 flex items-center space-x-2 text-lg">
+                <Lightbulb className="w-5 h-5 text-red-600" />
+                <span>Recommandations prioritaires</span>
+              </h3>
+              <div className="space-y-3">
+                {result.recommendations.map((rec, index) => (
+                  <div key={index} className="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 bg-red-200 text-red-800 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
+                        {index + 1}
+                      </div>
+                      <p className="text-red-800 leading-relaxed">{rec}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+} items-center space-x-3 md:space-x-4">
             <div className="bg-red-600 text-white px-3 py-1.5 md:px-4 md:py-2 rounded font-bold text-lg md:text-xl shadow-md">RTS</div>
             <div>
               <h1 className="text-lg md:text-3xl font-bold text-gray-800 mb-1 md:mb-2">RTS DigitalCheck</h1>
