@@ -79,17 +79,6 @@ npm run build
 - **60-74** : ⚠️ Digital First à améliorer
 - **0-59** : ❌ Approche traditionnelle - repenser en Digital First
 
-## 📸 Screenshots
-
-### Interface Mobile
-![Mobile Interface](docs/mobile-interface.png)
-
-### Mode Expert Desktop
-![Desktop Expert Mode](docs/desktop-expert.png)
-
-### Analyse des Résultats
-![Results Analysis](docs/results-analysis.png)
-
 ## 🤝 Contribution
 
 1. Fork le projet
@@ -107,8 +96,3 @@ MIT License - voir le fichier [LICENSE](LICENSE) pour plus de détails.
 - **Équipe RTS** pour les User Needs et définitions Digital First
 - **Claude AI** pour l'analyse intelligente des contenus
 - **Communauté React** pour l'écosystème
-
----
-
-**Made with ❤️ for RTS Digital First strategy**# digitalcheck
-DigitalCheck - Outil d'analyse Digital First
